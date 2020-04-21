@@ -33,13 +33,12 @@ module.exports = {
         const { page = 1 } = request.query;
         
         const [count] = await connection('incidents').count();
-       
+        console.log(`Buscando casos da página ${page}`);
         const incidents = await connection('incidents')
-            //.select('*');
             .join('ongs', 'ongs.id', '=', 'incidents.ong_id')
             .select(
                ['incidents.*', 'ongs.name', 'ongs.email', 'ongs.whatsapp', 'ongs.city', 'ongs.uf'])
-            .limit(50)
+            .limit(5)
             .offset((page - 1) * 5);
             
         response.header('X-Total-Count', count['count(*)']);
